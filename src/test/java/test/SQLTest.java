@@ -2,12 +2,11 @@ package test;
 
 import data.DataHelper;
 import lombok.val;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import page.LoginPage;
 
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
 public class SQLTest {
@@ -17,25 +16,30 @@ public class SQLTest {
         open("http://localhost:9999");
     }
 
+    @AfterAll
+    static void shouldClearCodes(){
+        DataHelper.clearCodes();
+    }
+
     @Test
     public void shouldLogInSuccessOneUser() {
         val loginPage = new LoginPage();
-        val user = DataHelper.getAuthInfoForUser(1);
+        val user = DataHelper.getAuthInfoForUser();
         val verificationPage = loginPage.validLogin(user);
         val verificationCode = DataHelper.getVerificationCodeForUser(user);
-        verificationPage.validVerify(verificationCode);
-        $("[data-test-id=dashboard]").shouldBe(visible);
+        val dashboardPage = verificationPage.validVerify(verificationCode);
     }
 
     @Test
     public void shouldLogInSuccessAnotherUser() {
         val loginPage = new LoginPage();
-        val user = DataHelper.getAuthInfoForUser(2);
+        val user = DataHelper.getAuthInfoForAnotherUser();
         val verificationPage = loginPage.validLogin(user);
         val verificationCode = DataHelper.getVerificationCodeForUser(user);
-        verificationPage.validVerify(verificationCode);
-        $("[data-test-id=dashboard]").shouldBe(visible);
+        val dashboardPage = verificationPage.validVerify(verificationCode);
     }
+
+
 }
 
 
