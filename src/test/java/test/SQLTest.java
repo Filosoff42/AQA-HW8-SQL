@@ -17,8 +17,8 @@ public class SQLTest {
     }
 
     @AfterAll
-    static void shouldClearCodes(){
-        DataHelper.clearCodes();
+    static void shouldClearData(){
+        DataHelper.clearAllData();
     }
 
     @Test

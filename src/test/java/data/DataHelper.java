@@ -44,11 +44,17 @@ public class DataHelper {
     }
 
     @SneakyThrows
-    public static void clearCodes() {
-        var clearData = "DELETE FROM auth_codes;";
+    public static void clearAllData() {
+        var clearCodes = "DELETE FROM auth_codes;";
+        var clearTransactions = "DELETE FROM card_transactions;";
+        var clearCards = "DELETE FROM cards;";
+        var clearUsers = "DELETE FROM users;";
         var runner = new QueryRunner();
         try (var conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/database", "user", "password")) {
-            runner.execute(conn, clearData);
+            runner.execute(conn, clearCodes);
+            runner.execute(conn, clearTransactions);
+            runner.execute(conn, clearCards);
+            runner.execute(conn, clearUsers);
         }
     }
 }
